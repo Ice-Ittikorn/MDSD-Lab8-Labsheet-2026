@@ -56,7 +56,94 @@
 บันทึกโค้ดที่ Gemini ตอบกลับมาที่ด้านล่าง
 
 ```text
-บันทึกผลลัพธ์ที่นี่
+นี่คือโค้ด Dart สำหรับการออกแบบทั้งสองตารางด้วย Drift
+พร้อมคำอธิบายชนิดข้อมูลและเหตุผลประกอบครับ
+
+1. ตาราง FavoriteProducts (เก็บรายการสินค้าที่ถูกใจ)
+
+ตารางนี้ทำหน้าที่เป็น Local Cache ย่อมๆ ช่วยให้แสดงหน้า "รายการโปรด" ได้ทันทีแบบ
+Offline โดยไม่ต้องรอโหลดจากเซิร์ฟเวอร์
+
+import 'package:drift/drift.dart';
+
+class FavoriteProducts extends Table {
+  // รหัสสินค้าจาก Backend
+  IntColumn get productId => integer()();
+
+  // ข้อมูลพื้นฐานสำหรับแสดงผลทันที (Cache)
+  TextColumn get name => text()();
+  RealColumn get price => real()();
+  TextColumn get imageUrl => text().nullable()();
+
+  // เวลาที่กดถูกใจ เพื่อใช้เรียงลำดับ
+  DateTimeColumn get likedAt => dateTime().withDefault(currentDateAndTime)();
+
+  // กำหนดให้ productId เป็น Primary Key
+  @override
+  Set<Column> get primaryKey => {productId};
+}
+
+เหตุผลในการเลือกชนิดข้อมูล:
+
+  - productId (IntColumn): ใช้เป็น Primary Key ไปในตัว เพื่อป้องกันข้อมูลซ้ำ
+    (กดถูกใจซ้ำไม่ได้) และค้นหาได้รวดเร็ว เหมาะกับ ID ตัวเลขจาก API
+  - name (TextColumn): สำหรับเก็บชื่อสินค้า เป็น String มาตรฐาน
+  - price (RealColumn): ใช้เก็บทศนิยม (Floating-point) สำหรับราคา
+    เพื่อรองรับสินค้าที่มีเศษสตางค์หรือการคำนวณส่วนลด
+  - imageUrl (TextColumn + .nullable()): สำหรับเก็บ URL ของรูปภาพ
+    เผื่อกรณีสินค้าบางรายการไม่มีรูปภาพหรือ URL โหลดไม่สำเร็จจึงอนุญาตให้เป็น
+    null ได้
+  - likedAt (DateTimeColumn): ใช้เก็บวันเวลา Drift จะแปลงเป็น Timestamp ให้
+    และใส่ .withDefault(currentDateAndTime) เพื่อบันทึกเวลาปัจจุบันของ SQLite
+    อัตโนมัติ ทำให้เราสามารถสั่ง orderBy([(t) => OrderingTerm.desc(t.likedAt)])
+    เพื่อดูรายการที่เพิ่งกดล่าสุดได้ทันที
+
+2. ตาราง ListingDrafts (เก็บร่างประกาศสินค้าจาก AI)
+
+ตารางนี้เน้นความยืดหยุ่นสูง เพราะการเป็น "ร่าง (Draft)"
+ข้อมูลอาจจะยังกรอกไม่ครบถ้วนในตอนแรก
+
+class ListingDrafts extends Table {
+  // Primary key รันอัตโนมัติของเครื่อง Local
+  IntColumn get id => integer().autoIncrement()();
+
+  // ข้อมูลที่ AI ช่วย Generate (ยอมให้ว่างได้ เพราะผู้ใช้อาจจะยังไม่ตรวจทาน)
+  TextColumn get title => text().nullable()();
+  TextColumn get category => text().nullable()();
+  TextColumn get description => text().nullable()();
+
+  // ที่อยู่ของไฟล์รูปภาพในเครื่อง
+  TextColumn get localImagePath => text()();
+
+  // เวลาที่อัปเดตล่าสุด
+  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+เหตุผลในการเลือกชนิดข้อมูล:
+
+  - id (IntColumn + .autoIncrement()): ในระดับ Local ควรมี Auto-increment ID
+    เป็นของตัวเอง เพื่อให้ผู้ใช้สามารถสร้างร่างประกาศไว้ได้หลายๆ ชิ้นพร้อมกัน
+  - title, category, description (TextColumn + .nullable()): เนื่องจากเป็นสถานะ
+    "ร่าง" AI อาจวิเคราะห์ได้ไม่ครบทุกส่วน หรือผู้ใช้อาจลบข้อความออกระหว่างแก้ไข
+    จึงต้องยอมให้ค่าเป็น null ได้ เพื่อไม่ให้เกิด Error ตอนบันทึก
+  - localImagePath (TextColumn): เก็บ String ที่เป็น Path อ้างอิงไฟล์ในเครื่อง
+    (เช่น /data/user/0/.../image.jpg) คอลัมน์นี้ ไม่ใส่ nullable
+    เพราะโจทย์ระบุว่าร่างนี้ แนะนำจากรูปภาพ
+    ดังนั้นรูปภาพจึงเป็นจุดตั้งต้นที่จำเป็นต้องมีเสมอ
+  - updatedAt (DateTimeColumn): บันทึกวันเวลาที่แก้ไขล่าสุด โดยตอน Insert
+    จะได้เวลาปัจจุบันอัตโนมัติ และเมื่อมีการอัปเดตเนื้อหา
+    ให้เขียนโค้ดอัปเดตค่านี้เป็น DateTime.now()
+    เพื่อใช้จัดเรียงร่างที่แก้ไขล่าสุดขึ้นมาแสดงก่อน
+
+คำแนะนำเพิ่มเติมสำหรับการนำไปใช้งาน:
+
+1.  สำหรับตาราง FavoriteProducts หากมีรายการโปรดจำนวนมาก (หลักร้อยขึ้นไป)
+    แนะนำให้สร้าง Index ที่คอลัมน์ likedAt เพื่อให้ Query
+    ดึงข้อมูลมาเรียงตามเวลาได้เร็วขึ้น
+2.  สำหรับ localImagePath ควรระวังเรื่องรูปภาพต้นฉบับถูกผู้ใช้ลบออกจากเครื่อง
+    (เช่น ลบจาก Gallery) ใน UI ควรมี Placeholder เตรียมไว้รองรับกรณีหาไฟล์ตาม
+    Path ไม่เจอด้วยครับ
+
 ```
 
 
