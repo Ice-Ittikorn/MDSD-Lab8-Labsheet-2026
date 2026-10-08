@@ -478,9 +478,14 @@ class SellItemPage extends StatefulWidget {
 
 > ✅ **Checkpoint 6.1** ถ่ายภาพหน้าจอที่แสดงให้เห็นว่า Tab รายการโปรดและหน้าร่างประกาศยังคงแสดงข้อมูลได้ตามปกติแม้ไม่มีอินเทอร์เน็ตเลย (ส่วน Tab หน้าหลักที่ดึงจาก Fake Store API คาดว่าจะแสดง Error ตามปกติ เพราะยังไม่ได้ทำ Local Cache ให้หน้านั้น) 
 
-```text
-บันทึกผลลัพธ์ที่นี่
-```
+<img width="513" height="210" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 21 15 50" src="https://github.com/user-attachments/assets/45d30ce5-eac9-4597-86fe-2b1af87b0ddd" />
+
+<img width="566" height="834" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 21 17 46" src="https://github.com/user-attachments/assets/1efed05b-c341-4a92-8b08-d2cfb3a86504" />
+
+<img width="571" height="833" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 21 17 59" src="https://github.com/user-attachments/assets/8fc937c8-6806-4401-9e3b-4c435adfb530" />
+
+<img width="568" height="827" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 21 18 14" src="https://github.com/user-attachments/assets/4f066600-cd15-4ce3-8867-fec4b419654d" />
+
 
 ---
 
