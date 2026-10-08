@@ -1,4 +1,4 @@
-# ใบงานปฏิบัติสัปดาห์ที่ 8: Local Database & Persistence ด้วย Drift
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 49 56" src="https://github.com/user-attachments/assets/7fc4f9bb-5775-4a42-983f-60fcc0a685a3" /># ใบงานปฏิบัติสัปดาห์ที่ 8: Local Database & Persistence ด้วย Drift
 
 **วิชา** การพัฒนาซอฟต์แวร์สำหรับอุปกรณ์เคลื่อนที่ | **เครื่องมือ** Flutter, Drift, sqlite3_flutter_libs, build_runner, Google AI Studio
 
@@ -389,9 +389,25 @@ items: const [
 
 > ✅ **Checkpoint 4.1** รันแอปแล้วทดสอบ: (ก) กดหัวใจที่สินค้า 3 ชิ้นจากหน้า Home (ข) สลับไป Tab "รายการโปรด" เห็นครบทั้ง 3 ชิ้น (ค) ปิดแอปให้สนิท (Force Stop หรือปัดออกจาก Recent Apps) แล้วเปิดใหม่ กลับไปที่ Tab รายการโปรดอีกครั้ง ถ่ายภาพหน้าจอ (ข) และ (ค) เทียบกัน ต้องแสดงรายการเดิมครบทุกชิ้น พร้อมทดสอบกดลบ (Remove) 1 ชิ้น แล้วปิดเปิดแอปใหม่อีกครั้งเพื่อยืนยันว่าการลบก็ถูกบันทึกถาวรเช่นกัน (ง) กลับไปหน้า Home แล้วกดหัวใจซ้ำที่สินค้าชิ้นเดิมอีกครั้ง (ชิ้นที่ยังไม่ได้ลบ) แล้วตรวจสอบที่ Tab รายการโปรดว่ายังแสดงสินค้าชิ้นนั้นแค่แถวเดียว ไม่ซ้ำเป็น 2 แถว และแอปไม่ Error
 
-```text
-บันทึกผลลัพธ์ที่นี่
-```
+## ก
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 48 02" src="https://github.com/user-attachments/assets/051760ba-cb24-4f63-80cb-9da2a5339cd1" />
+
+## ข
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 48 45" src="https://github.com/user-attachments/assets/2c237253-56cf-45c1-ba9e-35e6d3d5b4d2" />
+
+## ค
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 49 56" src="https://github.com/user-attachments/assets/ce2a47e0-4c3a-4560-a798-73e62339d8e1" />
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 50 28" src="https://github.com/user-attachments/assets/8e99687a-bf00-4d11-abcb-7beb7843f8a2" />
+
+## ลบ 1 item
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 51 54" src="https://github.com/user-attachments/assets/e24bea9d-c09a-4a47-804c-f70797d9ecdc" />
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 52 29" src="https://github.com/user-attachments/assets/7d02f08c-a1ad-452f-83e9-6199d2ac08eb" />
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 52 45" src="https://github.com/user-attachments/assets/8e267651-a2bc-42c6-97c3-ee87361d9049" />
+
+## ง
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 53 18" src="https://github.com/user-attachments/assets/732cfb31-bebc-4685-a7be-f0903b6cce15" />
+<img width="659" height="912" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 53 43" src="https://github.com/user-attachments/assets/c173e48e-a89a-4f72-b11f-0249016659a0" />
+
 
 ---
 
